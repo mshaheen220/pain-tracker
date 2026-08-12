@@ -3,6 +3,18 @@ import PainForm from './components/PainForm';
 import HumanModel from './components/HumanModel';
 import './App.css';
 import legacyPains from './assets/legacy_pains.json';
+import improvedIcon from './assets/icons/trend_improved.png';
+import intensifiedIcon from './assets/icons/trend_intensified.png';
+import newIcon from './assets/icons/trend_new.png';
+import unchangedIcon from './assets/icons/trend_unchanged.png';
+
+const trendIcons = {
+  improved: improvedIcon,
+  intensified: intensifiedIcon,
+  new: newIcon,
+  unchanged: unchangedIcon,
+};
+
 
 const bodyParts = [
   "Head", "Neck", "Shoulder", "Arm", "Elbow", "Forearm", "Wrist", "Hand", "Finger",
@@ -36,11 +48,34 @@ function migrateLegacyEntry(entry) {
   return newEntry;
 }
 
+function formatLocation(location) {
+  const { bodyPart, side, specific } = location;
+  let locationString = bodyPart || 'N/A';
+
+  if (side && side !== 'center') {
+    locationString += `, ${side.charAt(0).toUpperCase() + side.slice(1)}`;
+  }
+  if (specific && specific.toLowerCase() !== bodyPart.toLowerCase()) {
+    locationString += ` (${specific})`;
+  }
+  return locationString;
+}
+
+function getSeverityColor(severity) {
+  // Maps severity from 0-10 to a hue from 120 (green) to 0 (red).
+  const hue = (10 - severity) * 12;
+  // For low severity, we want it to be less saturated.
+  const saturation = 70 + (severity * 3); // 70% to 100%
+  const lightness = 50;
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+}
+
 function App() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState(null);
   const [hoveredPainId, setHoveredPainId] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
+  const [focusedPainPoint, setFocusedPainPoint] = useState(null); // New state for focused point
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   // Initialize state from localStorage or an empty array
@@ -90,6 +125,13 @@ function App() {
       return true;
     });
   }, [painLogs, startDate, endDate]);
+
+  const painPointsWithColor = useMemo(() => {
+    return filteredPainLogs.map(log => ({
+        ...log,
+        color: getSeverityColor(log.severity)
+    }));
+  }, [filteredPainLogs]);
 
   const handleLogPain = (logData) => {
     if (editingEntry) {
@@ -146,7 +188,8 @@ function App() {
           onPointClick={handleModelInteraction}
           clickedPoint={isFormOpen ? clickedCoordinates : null}
           hoveredPainId={hoveredPainId}
-          painPoints={filteredPainLogs}
+          focusedPainPoint={focusedPainPoint} // Pass focused point to HumanModel
+          painPoints={painPointsWithColor}
         />
       </div>
 
@@ -187,12 +230,31 @@ function App() {
                     <li
                       key={log.id}
                       className="pain-log-item"
-                      onMouseEnter={() => setHoveredPainId(log.id)}
-                      onMouseLeave={() => setHoveredPainId(null)}
+                      style={{ borderLeftColor: getSeverityColor(log.severity) }} // Keep severity color
+                      onMouseEnter={() => {
+                        setHoveredPainId(log.id);
+                        setFocusedPainPoint(log); // Set focused point on hover
+                      }}
+                      onMouseLeave={() => {
+                        setHoveredPainId(null);
+                        setFocusedPainPoint(null); // Clear focused point on leave
+                      }}
                       onClick={() => handleEditClick(log)}>
                       <div className="pain-log-header">
-                        <strong>{log.location.bodyPart}</strong>
-                        <span>Severity: {log.severity}/10</span>
+                        <strong>{formatLocation(log.location)}</strong>
+                        <div className="pain-log-header-right">
+                          {log.trend && trendIcons[log.trend] && (
+                            <img
+                              src={trendIcons[log.trend]}
+                              alt={log.trend}
+                              title={log.trend}
+                              className="trend-icon"
+                            />
+                          )}
+                          <span className="severity-pill" style={{ backgroundColor: getSeverityColor(log.severity) }}>
+                            {log.severity}
+                          </span>
+                        </div>
                       </div>
                       <div className="pain-log-details">
                         <small>{new Date(log.timestamp).toLocaleString()}</small>

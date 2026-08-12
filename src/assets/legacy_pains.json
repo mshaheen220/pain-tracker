@@ -1,11 +1,71 @@
 [
     {
+        "id": "entry-1786564125096",
+        "timestamp": "2026-08-12T19:48:45.096Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "right",
+            "specific": "ankle to top of foot",
+            "coordinates": {
+                "x": -0.36734507607995004,
+                "y": -1.6011537741260446,
+                "z": 0.14619546391785124
+            }
+        },
+        "severity": 8,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "entire ankle hurts. difficult to walk on"
+    },
+    {
+        "id": "entry-1786563952391",
+        "timestamp": "2026-08-12T19:45:52.391Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "right",
+            "specific": "Middle knuckle",
+            "coordinates": {
+                "x": -1.7460238679028108,
+                "y": 0.860371082752236,
+                "z": -0.11995828278606785
+            }
+        },
+        "severity": 8,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "new",
+        "notes": "cannot bend middle finger"
+    },
+    {
+        "id": "entry-1786563883400",
+        "timestamp": "2026-08-12T19:44:43.400Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "right",
+            "specific": "",
+            "coordinates": {
+                "x": -1.1483719255781322,
+                "y": 1.3940786126217293,
+                "z": -0.26223782547489827
+            }
+        },
+        "severity": 8,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "intensified",
+        "notes": "OMG the pain in the elbow down to the forearm is intense today. cannot straighten arm"
+    },
+    {
         "id": "entry-1786618400005",
         "timestamp": "2026-08-11T15:00:00.000Z",
         "location": {
             "bodyPart": "Toe",
-            "side": "left",
-            "specific": "left big toe",
+            "side": "center",
+            "specific": "",
             "coordinates": {
                 "x": 0.3409931173244422,
                 "y": -1.6834278744306523,
@@ -24,8 +84,8 @@
         "timestamp": "2026-08-11T12:00:00.000Z",
         "location": {
             "bodyPart": "Hand",
-            "side": "left",
-            "specific": "hands, fingers",
+            "side": "center",
+            "specific": "hand",
             "coordinates": {
                 "x": 1.6528442802809407,
                 "y": 1.001787293954357,
@@ -44,8 +104,8 @@
         "timestamp": "2026-08-11T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "right",
-            "specific": "right elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": -1.085605953490451,
                 "y": 1.4158080892874305,
@@ -64,8 +124,8 @@
         "timestamp": "2026-08-11T12:00:00.000Z",
         "location": {
             "bodyPart": "Foot",
-            "side": "right",
-            "specific": "right foot - top",
+            "side": "center",
+            "specific": "foot",
             "coordinates": {
                 "x": -0.42334630669542234,
                 "y": -1.599979204334745,
@@ -84,8 +144,8 @@
         "timestamp": "2026-08-11T12:00:00.000Z",
         "location": {
             "bodyPart": "Toe",
-            "side": "right",
-            "specific": "right big toe",
+            "side": "center",
+            "specific": "toe",
             "coordinates": {
                 "x": -0.41807099202664016,
                 "y": -1.637508967469268,
@@ -105,7 +165,7 @@
         "location": {
             "bodyPart": "",
             "side": "center",
-            "specific": "full body",
+            "specific": "",
             "coordinates": {
                 "x": 0,
                 "y": 0,
@@ -124,8 +184,8 @@
         "timestamp": "2026-08-10T06:00:00.000Z",
         "location": {
             "bodyPart": "Toe",
-            "side": "left",
-            "specific": "left big toe - before the toe itself",
+            "side": "center",
+            "specific": "toe",
             "coordinates": {
                 "x": 0.3554428318244537,
                 "y": -1.6529524603039476,
@@ -144,8 +204,8 @@
         "timestamp": "2026-08-09T21:00:00.000Z",
         "location": {
             "bodyPart": "Ankle",
-            "side": "left",
-            "specific": "left foot - inside of ankle up to and through big toe",
+            "side": "center",
+            "specific": "ankle",
             "coordinates": {
                 "x": 0.3451492887682236,
                 "y": -1.5905356274733695,
@@ -164,8 +224,8 @@
         "timestamp": "2026-08-09T12:00:00.000Z",
         "location": {
             "bodyPart": "Finger",
-            "side": "left",
-            "specific": "left thumb",
+            "side": "center",
+            "specific": "finger",
             "coordinates": {
                 "x": 1.531462113460449,
                 "y": 0.9842259149550157,
@@ -184,8 +244,8 @@
         "timestamp": "2026-08-09T12:00:00.000Z",
         "location": {
             "bodyPart": "Wrist",
-            "side": "right",
-            "specific": "right wrist",
+            "side": "center",
+            "specific": "wrist",
             "coordinates": {
                 "x": -1.443339978202176,
                 "y": 1.140465346546295,
@@ -204,8 +264,8 @@
         "timestamp": "2026-08-09T06:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "right",
-            "specific": "right elbow - not where it bends",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": -1.1064487813746673,
                 "y": 1.4375022380058846,
@@ -224,8 +284,8 @@
         "timestamp": "2026-08-08T21:00:00.000Z",
         "location": {
             "bodyPart": "Finger",
-            "side": "left",
-            "specific": "left thumb base outside",
+            "side": "center",
+            "specific": "finger",
             "coordinates": {
                 "x": 1.5058522863469963,
                 "y": 1.0366437609224524,
@@ -244,8 +304,8 @@
         "timestamp": "2026-08-08T12:00:00.000Z",
         "location": {
             "bodyPart": "Wrist",
-            "side": "left",
-            "specific": "hands, fingers, left thumb, wrists",
+            "side": "center",
+            "specific": "wrist",
             "coordinates": {
                 "x": 1.4630303094105293,
                 "y": 1.126817444305717,
@@ -264,8 +324,8 @@
         "timestamp": "2026-08-08T12:00:00.000Z",
         "location": {
             "bodyPart": "Shoulder",
-            "side": "left",
-            "specific": "",
+            "side": "center",
+            "specific": "shoulder",
             "coordinates": {
                 "x": 0.4120691346006969,
                 "y": 2.031993794126321,
@@ -284,8 +344,8 @@
         "timestamp": "2026-08-07T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "right",
-            "specific": "right elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": -1.0514001470829013,
                 "y": 1.4465030701704946,
@@ -304,8 +364,8 @@
         "timestamp": "2026-08-07T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "left",
-            "specific": "left elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": 1.0235234589691136,
                 "y": 1.4675650695930482,
@@ -325,7 +385,7 @@
         "location": {
             "bodyPart": "Hand",
             "side": "center",
-            "specific": "pinky knuckles both hands",
+            "specific": "hand",
             "coordinates": {
                 "x": -1.689368427299333,
                 "y": 0.9292723282415625,
@@ -344,8 +404,8 @@
         "timestamp": "2026-08-07T12:00:00.000Z",
         "location": {
             "bodyPart": "Ankle",
-            "side": "left",
-            "specific": "left ankle - top, offset to inside",
+            "side": "center",
+            "specific": "ankle",
             "coordinates": {
                 "x": 0.38103285821807215,
                 "y": -1.5695715950677351,
@@ -364,8 +424,8 @@
         "timestamp": "2026-08-07T12:00:00.000Z",
         "location": {
             "bodyPart": "Ankle",
-            "side": "right",
-            "specific": "right ankle",
+            "side": "center",
+            "specific": "ankle",
             "coordinates": {
                 "x": -0.43470759239682444,
                 "y": -1.4688310140465164,
@@ -385,7 +445,7 @@
         "location": {
             "bodyPart": "Shoulder",
             "side": "center",
-            "specific": "both shoulders",
+            "specific": "shoulder",
             "coordinates": {
                 "x": -0.36540279015437993,
                 "y": 2.0343028229290425,
@@ -404,8 +464,8 @@
         "timestamp": "2026-08-06T17:00:00.000Z",
         "location": {
             "bodyPart": "Ankle",
-            "side": "left",
-            "specific": "left ankle",
+            "side": "center",
+            "specific": "ankle",
             "coordinates": {
                 "x": 0.37270898980479766,
                 "y": -1.522882337704288,
@@ -424,8 +484,8 @@
         "timestamp": "2026-08-06T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "left",
-            "specific": "left elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": 0.9578465111031877,
                 "y": 1.3789242658838594,
@@ -436,7 +496,7 @@
         "isSwollen": false,
         "isHotToTouch": false,
         "isTenderToTouch": true,
-        "trend": "worsening",
+        "trend": "new",
         "notes": "Tenderness to touch appeared around noon. 800mg ibuprofen did nothing"
     },
     {
@@ -445,7 +505,7 @@
         "location": {
             "bodyPart": "Finger",
             "side": "center",
-            "specific": "both pinkies",
+            "specific": "finger",
             "coordinates": {
                 "x": 1.6855846242527905,
                 "y": 0.9195833631002994,
@@ -456,7 +516,7 @@
         "isSwollen": false,
         "isHotToTouch": false,
         "isTenderToTouch": false,
-        "trend": "improving",
+        "trend": "improved",
         "notes": "After shower pains are mostly gone (little hints but no actual pain left). Pins & needles remained for about 60 min. 800mg ibuprofen did nothing"
     },
     {
@@ -464,8 +524,8 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Finger",
-            "side": "left",
-            "specific": "left pinky - bottom knuckle",
+            "side": "center",
+            "specific": "finger",
             "coordinates": {
                 "x": 1.64011642175476,
                 "y": 0.9596115195858803,
@@ -484,8 +544,8 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Finger",
-            "side": "right",
-            "specific": "right pinky - bottom 2 knuckles",
+            "side": "center",
+            "specific": "finger",
             "coordinates": {
                 "x": -1.708735478949244,
                 "y": 0.8925386600735497,
@@ -504,8 +564,8 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Ankle",
-            "side": "left",
-            "specific": "left ankle - inside on the ball",
+            "side": "center",
+            "specific": "ankle",
             "coordinates": {
                 "x": 0.33460000282689845,
                 "y": -1.5499536707213601,
@@ -524,15 +584,15 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "left",
-            "specific": "left elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": 1.0164878911503137,
                 "y": 1.4358173268647683,
                 "z": -0.32040018234407636
             }
         },
-        "severity": 5,
+        "severity": 1,
         "isSwollen": false,
         "isHotToTouch": false,
         "isTenderToTouch": true,
@@ -544,8 +604,8 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Elbow",
-            "side": "right",
-            "specific": "right elbow",
+            "side": "center",
+            "specific": "elbow",
             "coordinates": {
                 "x": -1.0791969181038286,
                 "y": 1.4527812608247856,
@@ -564,15 +624,15 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Knee",
-            "side": "left",
-            "specific": "left knee - top of cap surface",
+            "side": "center",
+            "specific": "knee",
             "coordinates": {
                 "x": 0.3056095025059559,
                 "y": -0.45198602770360674,
                 "z": 0.14320322541570454
             }
         },
-        "severity": 5,
+        "severity": 9,
         "isSwollen": false,
         "isHotToTouch": false,
         "isTenderToTouch": true,
@@ -584,8 +644,8 @@
         "timestamp": "2026-08-05T12:00:00.000Z",
         "location": {
             "bodyPart": "Wrist",
-            "side": "left",
-            "specific": "left wrist - outside just above the ball",
+            "side": "center",
+            "specific": "wrist",
             "coordinates": {
                 "x": 1.4493349085511644,
                 "y": 1.1033818750277287,

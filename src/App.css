@@ -81,7 +81,8 @@ h1 {
 .pain-log-item {
   background-color: #2d3748; /* A slightly lighter dark background */
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-left-width: 5px;
+  border-radius: 0 6px 6px 0; /* Rounded corners except on the left */
   padding: 1rem;
   margin-bottom: 1rem;
   transition: background-color 0.2s, border-color 0.2s;
@@ -106,6 +107,25 @@ h1 {
   gap: 0.75rem;
 }
 
+.trend-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(0.8); /* Adjust icon color to fit dark theme */
+}
+
+.severity-pill {
+  color: white;
+  font-weight: bold;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  font-size: 0.8rem;
+  line-height: 1;
+  min-width: 1rem;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+}
+
 .pain-log-tags {
   display: flex;
   gap: 0.5rem;
@@ -117,6 +137,12 @@ h1 {
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.8rem;
+}
+
+.tag-trend {
+  background-color: #3182ce; /* A different color for trend */
+  font-weight: 500;
+  text-transform: capitalize;
 }
 
 /* --- Pain Form Styles --- */
@@ -207,5 +233,4 @@ h1 {
 
 .delete-entry-button:hover {
   background-color: #c53030;
-}
 }
