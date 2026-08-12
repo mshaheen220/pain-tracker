@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import PainForm from './components/PainForm';
 import HumanModel from './components/HumanModel';
 import './App.css';
-import legacyPains from './assets/legacy_pains.json';
+import Login from './components/Login';
 import { supabase } from './supabaseClient';
 import improvedIcon from './assets/icons/trend_improved.png';
 import intensifiedIcon from './assets/icons/trend_intensified.png';
@@ -16,38 +16,6 @@ const trendIcons = {
   unchanged: unchangedIcon,
 };
 
-
-const bodyParts = [
-  "Head", "Neck", "Shoulder", "Arm", "Elbow", "Forearm", "Wrist", "Hand", "Finger",
-  "Chest", "Upper Back", "Lower Back", "Abdomen", "Hip", "Thigh", "Knee",
-  "Lower Leg", "Ankle", "Foot", "Toe"
-];
-
-function migrateLegacyEntry(entry) {
-  const newEntry = { ...entry };
-  const locationString = entry.location.bodyPart.toLowerCase();
-  let side = 'center';
-  let bodyPart = '';
-  let specific = locationString;
-
-  if (locationString.includes('left')) {
-    side = 'left';
-  } else if (locationString.includes('right')) {
-    side = 'right';
-  } else if (locationString.includes('both')) {
-    side = 'center';
-  }
-
-  for (const part of bodyParts) {
-    if (locationString.includes(part.toLowerCase())) {
-      bodyPart = part;
-      break;
-    }
-  }
-
-  newEntry.location = { bodyPart, side, specific, coordinates: entry.location.coordinates };
-  return newEntry;
-}
 
 function formatLocation(location) {
   const { bodyPart, side, specific } = location;
@@ -77,6 +45,8 @@ function App() {
   const [hoveredPainId, setHoveredPainId] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
   const [focusedPainPoint, setFocusedPainPoint] = useState(null); // New state for focused point
+  const [session, setSession] = useState(null);
+  const [profile, setProfile] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   // Initialize state from localStorage or an empty array
@@ -85,58 +55,48 @@ function App() {
     return [];
   });
 
-  // Fetch pain logs from Supabase on component mount
+  // Handle auth state changes
   useEffect(() => {
-    const fetchPainLogs = async () => {
-      const { data, error } = await supabase
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Fetch data when session changes
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!session) return;
+
+      // Fetch user profile
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+      if (profileError) console.error('Error fetching profile:', profileError);
+      else setProfile(profileData);
+
+      // Fetch pain logs
+      const { data: logsData, error: logsError } = await supabase
         .from('pain_entries')
         .select('*')
-        .order('timestamp', { ascending: false }); // Order by newest first
+        .order('timestamp', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching pain logs:', error);
-        // Fallback to local storage if Supabase fails on initial load
-        try {
-          const savedLogs = localStorage.getItem('painLogs');
-          if (savedLogs) {
-            return JSON.parse(savedLogs);
-          }
-        } catch (lsError) {
-          console.error("Could not parse pain logs from localStorage fallback", lsError);
-        }
-        return [];
-      }
-
-      if (data && data.length > 0) {
-        // If data is fetched from Supabase, save it to localStorage as a cache
-        localStorage.setItem('painLogs', JSON.stringify(data));
-        setPainLogs(data);
-      } else {
-        // If no data in Supabase, but legacy data exists, use and upload it
-        const savedLogs = localStorage.getItem('painLogs');
-        const parsed = savedLogs ? JSON.parse(savedLogs) : legacyPains.map(migrateLegacyEntry);
-        if (parsed.length > 0) {
-          console.log("No Supabase data, using and uploading legacy/local data.");
-          // Upload legacy data to Supabase
-          const { error: uploadError } = await supabase.from('pain_entries').insert(parsed);
-          if (uploadError) console.error("Error uploading legacy data:", uploadError);
-          setPainLogs(parsed.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
-        }
-      }
+      if (logsError) console.error('Error fetching pain logs:', logsError);
+      else setPainLogs(logsData || []);
     };
 
-    fetchPainLogs();
-  }, []); // Empty dependency array means this runs once on mount
-
-  // Keep localStorage updated as a cache, but primary source is Supabase
-  useEffect(() => {
-    if (painLogs.length > 0) {
-      localStorage.setItem('painLogs', JSON.stringify(painLogs));
-    } else {
-      // If painLogs becomes empty, clear localStorage too
-      localStorage.removeItem('painLogs');
-    }
-  }, [painLogs]);
+    fetchData();
+  }, [session]);
 
   const handleClearFilters = () => {
     setStartDate('');
@@ -225,6 +185,9 @@ function App() {
   };
 
   const handleModelInteraction = (point) => {
+    // Only allow model interaction for admins
+    if (profile?.role !== 'admin') return;
+
     if (isFormOpen && editingEntry) {
       // If the form is open for editing, just update the coordinates for the current session.
       setClickedCoordinates(point);
@@ -237,6 +200,9 @@ function App() {
   };
 
   const handleEditClick = (log) => {
+    // Only allow editing for admins
+    if (profile?.role !== 'admin') return;
+
     setEditingEntry(log);
     setClickedCoordinates(log.location.coordinates); // Also set coordinates for the marker
     setIsFormOpen(true);
@@ -247,6 +213,10 @@ function App() {
     setEditingEntry(null);
     setClickedCoordinates(null);
   };
+
+  if (!session) {
+    return <Login />;
+  }
 
   return (
     <div className="app-container">
@@ -260,6 +230,12 @@ function App() {
           painPoints={painPointsWithColor}
         />
       </div>
+      <button
+        onClick={() => supabase.auth.signOut()}
+        className="logout-button"
+        style={{ position: 'absolute', top: '2.5rem', right: '2.5rem' }}>
+        Sign Out
+      </button>
 
       <div className="right-panel">
         {isFormOpen ? (
@@ -272,7 +248,7 @@ function App() {
           />
         ) : (
           <>
-            <div className="filter-container">
+            <div className="filter-container" style={{ marginTop: '1.5rem' }}>
               <div className="date-filters">
                 <div className="form-group">
                   <label htmlFor="startDate">From</label>
