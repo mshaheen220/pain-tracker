@@ -4,7 +4,7 @@ import { OrbitControls, useGLTF, Html } from '@react-three/drei';
 import * as THREE from 'three'; // Import THREE
 
 function Model(props) {
-  const { scene } = useGLTF('/human_body.glb');
+  const { scene } = useGLTF(`${import.meta.env.BASE_URL}human_body.glb`);
 
   // Traverse the model's nodes to set shadow properties on each mesh
   useEffect(() => {
