@@ -1,0 +1,602 @@
+[
+    {
+        "id": "entry-1786618400005",
+        "timestamp": "2026-08-11T15:00:00.000Z",
+        "location": {
+            "bodyPart": "Toe",
+            "side": "left",
+            "specific": "left big toe",
+            "coordinates": {
+                "x": 0.3409931173244422,
+                "y": -1.6834278744306523,
+                "z": 0.3917325711412709
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Started after a few hours"
+    },
+    {
+        "id": "entry-1786618400001",
+        "timestamp": "2026-08-11T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Hand",
+            "side": "left",
+            "specific": "hands, fingers",
+            "coordinates": {
+                "x": 1.6528442802809407,
+                "y": 1.001787293954357,
+                "z": -0.14669058101785756
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "stable",
+        "notes": "Left arm fine, shoulders fine"
+    },
+    {
+        "id": "entry-1786618400002",
+        "timestamp": "2026-08-11T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "right",
+            "specific": "right elbow",
+            "coordinates": {
+                "x": -1.085605953490451,
+                "y": 1.4158080892874305,
+                "z": -0.29785517540820755
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "Left arm fine, shoulders fine"
+    },
+    {
+        "id": "entry-1786618400003",
+        "timestamp": "2026-08-11T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Foot",
+            "side": "right",
+            "specific": "right foot - top",
+            "coordinates": {
+                "x": -0.42334630669542234,
+                "y": -1.599979204334745,
+                "z": 0.16208473939354534
+            }
+        },
+        "severity": 7,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Tried to drive but using right foot hurt a lot"
+    },
+    {
+        "id": "entry-1786618400004",
+        "timestamp": "2026-08-11T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Toe",
+            "side": "right",
+            "specific": "right big toe",
+            "coordinates": {
+                "x": -0.41807099202664016,
+                "y": -1.637508967469268,
+                "z": 0.2644107937815481
+            }
+        },
+        "severity": 7,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Tried to drive but using right foot hurt a lot"
+    },
+    {
+        "id": "entry-1786532000002",
+        "timestamp": "2026-08-10T12:00:00.000Z",
+        "location": {
+            "bodyPart": "",
+            "side": "center",
+            "specific": "full body",
+            "coordinates": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            }
+        },
+        "severity": 8,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Everywhere hurts. It's exhausting. I stayed in bed all day. 200mg celecoxib. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786532000001",
+        "timestamp": "2026-08-10T06:00:00.000Z",
+        "location": {
+            "bodyPart": "Toe",
+            "side": "left",
+            "specific": "left big toe - before the toe itself",
+            "coordinates": {
+                "x": 0.3554428318244537,
+                "y": -1.6529524603039476,
+                "z": 0.2954959865582002
+            }
+        },
+        "severity": 7,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Pain woke me up. But like before the toe itself. 200mg celecoxib. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786445600004",
+        "timestamp": "2026-08-09T21:00:00.000Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "left",
+            "specific": "left foot - inside of ankle up to and through big toe",
+            "coordinates": {
+                "x": 0.3451492887682236,
+                "y": -1.5905356274733695,
+                "z": 0.05672831555538276
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "At end of night. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786445600002",
+        "timestamp": "2026-08-09T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "left",
+            "specific": "left thumb",
+            "coordinates": {
+                "x": 1.531462113460449,
+                "y": 0.9842259149550157,
+                "z": 0.0008506475448823258
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "stable",
+        "notes": "Still sore. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786445600003",
+        "timestamp": "2026-08-09T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Wrist",
+            "side": "right",
+            "specific": "right wrist",
+            "coordinates": {
+                "x": -1.443339978202176,
+                "y": 1.140465346546295,
+                "z": -0.1444703212574639
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Sore so wore a brace. Below waist is fine. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786445600001",
+        "timestamp": "2026-08-09T06:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "right",
+            "specific": "right elbow - not where it bends",
+            "coordinates": {
+                "x": -1.1064487813746673,
+                "y": 1.4375022380058846,
+                "z": -0.24626607319095356
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Woke me up. But not where it bends. Later on lifting a glass to my mouth hurt my elbow. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786359200003",
+        "timestamp": "2026-08-08T21:00:00.000Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "left",
+            "specific": "left thumb base outside",
+            "coordinates": {
+                "x": 1.5058522863469963,
+                "y": 1.0366437609224524,
+                "z": -0.01698194823289441
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "worsening",
+        "notes": "Very tender at end of night"
+    },
+    {
+        "id": "entry-1786359200001",
+        "timestamp": "2026-08-08T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Wrist",
+            "side": "left",
+            "specific": "hands, fingers, left thumb, wrists",
+            "coordinates": {
+                "x": 1.4630303094105293,
+                "y": 1.126817444305717,
+                "z": -0.12730598650253122
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "stable",
+        "notes": "Just hands today."
+    },
+    {
+        "id": "entry-1786359200002",
+        "timestamp": "2026-08-08T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Shoulder",
+            "side": "left",
+            "specific": "",
+            "coordinates": {
+                "x": 0.4120691346006969,
+                "y": 2.031993794126321,
+                "z": -0.14473805852149518
+            }
+        },
+        "severity": 4,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "stable",
+        "notes": "Tight"
+    },
+    {
+        "id": "entry-1786272800001",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "right",
+            "specific": "right elbow",
+            "coordinates": {
+                "x": -1.0514001470829013,
+                "y": 1.4465030701704946,
+                "z": -0.29513220929170353
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Stiff and sore. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786272800002",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "left",
+            "specific": "left elbow",
+            "coordinates": {
+                "x": 1.0235234589691136,
+                "y": 1.4675650695930482,
+                "z": -0.29422916214654454
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Stiff and sore. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786272800003",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Hand",
+            "side": "center",
+            "specific": "pinky knuckles both hands",
+            "coordinates": {
+                "x": -1.689368427299333,
+                "y": 0.9292723282415625,
+                "z": -0.26833213978717096
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "stable",
+        "notes": "1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786272800004",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "left",
+            "specific": "left ankle - top, offset to inside",
+            "coordinates": {
+                "x": 0.38103285821807215,
+                "y": -1.5695715950677351,
+                "z": 0.08891740604809979
+            }
+        },
+        "severity": 6,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Pain is worse and has migrated to top of ankle, still offset to inside. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786272800005",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "right",
+            "specific": "right ankle",
+            "coordinates": {
+                "x": -0.43470759239682444,
+                "y": -1.4688310140465164,
+                "z": -0.01966664889497667
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "The whole thing. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786272800006",
+        "timestamp": "2026-08-07T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Shoulder",
+            "side": "center",
+            "specific": "both shoulders",
+            "coordinates": {
+                "x": -0.36540279015437993,
+                "y": 2.0343028229290425,
+                "z": -0.13966847039735578
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "Tight. Pain when lifting arms. 1300mg Tylenol did nothing"
+    },
+    {
+        "id": "entry-1786186400003",
+        "timestamp": "2026-08-06T17:00:00.000Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "left",
+            "specific": "left ankle",
+            "coordinates": {
+                "x": 0.37270898980479766,
+                "y": -1.522882337704288,
+                "z": 0.02448841153247419
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "worsening",
+        "notes": "Pain returned around 5. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786186400002",
+        "timestamp": "2026-08-06T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "left",
+            "specific": "left elbow",
+            "coordinates": {
+                "x": 0.9578465111031877,
+                "y": 1.3789242658838594,
+                "z": -0.3427597750621919
+            }
+        },
+        "severity": 4,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "worsening",
+        "notes": "Tenderness to touch appeared around noon. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786186400001",
+        "timestamp": "2026-08-06T09:00:00.000Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "center",
+            "specific": "both pinkies",
+            "coordinates": {
+                "x": 1.6855846242527905,
+                "y": 0.9195833631002994,
+                "z": -0.2679679261679763
+            }
+        },
+        "severity": 2,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "improving",
+        "notes": "After shower pains are mostly gone (little hints but no actual pain left). Pins & needles remained for about 60 min. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000001",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "left",
+            "specific": "left pinky - bottom knuckle",
+            "coordinates": {
+                "x": 1.64011642175476,
+                "y": 0.9596115195858803,
+                "z": -0.25870717013074807
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000002",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Finger",
+            "side": "right",
+            "specific": "right pinky - bottom 2 knuckles",
+            "coordinates": {
+                "x": -1.708735478949244,
+                "y": 0.8925386600735497,
+                "z": -0.270416859945746
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000003",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Ankle",
+            "side": "left",
+            "specific": "left ankle - inside on the ball",
+            "coordinates": {
+                "x": 0.33460000282689845,
+                "y": -1.5499536707213601,
+                "z": -0.08810271031460629
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000004",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "left",
+            "specific": "left elbow",
+            "coordinates": {
+                "x": 1.0164878911503137,
+                "y": 1.4358173268647683,
+                "z": -0.32040018234407636
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000005",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Elbow",
+            "side": "right",
+            "specific": "right elbow",
+            "coordinates": {
+                "x": -1.0791969181038286,
+                "y": 1.4527812608247856,
+                "z": -0.25851681652770814
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000006",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Knee",
+            "side": "left",
+            "specific": "left knee - top of cap surface",
+            "coordinates": {
+                "x": 0.3056095025059559,
+                "y": -0.45198602770360674,
+                "z": 0.14320322541570454
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": true,
+        "trend": "new",
+        "notes": "So not necessarily the joint. 800mg ibuprofen did nothing"
+    },
+    {
+        "id": "entry-1786100000007",
+        "timestamp": "2026-08-05T12:00:00.000Z",
+        "location": {
+            "bodyPart": "Wrist",
+            "side": "left",
+            "specific": "left wrist - outside just above the ball",
+            "coordinates": {
+                "x": 1.4493349085511644,
+                "y": 1.1033818750277287,
+                "z": -0.2239224174863161
+            }
+        },
+        "severity": 5,
+        "isSwollen": false,
+        "isHotToTouch": false,
+        "isTenderToTouch": false,
+        "trend": "new",
+        "notes": "800mg ibuprofen did nothing"
+    }
+]
