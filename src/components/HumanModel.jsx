@@ -21,17 +21,28 @@ function Model(props) {
 
 function PainPointMarker({ position, isHovered, color }) { // color is now the HSL string
   const meshRef = useRef();
+  const materialRef = useRef();
+
+  // Create a stable THREE.Color object for the hover color
+  const hoverColor = useMemo(() => new THREE.Color('#ff4d4d'), []);
+
+  // This effect will run whenever the hover state or the base color changes
+  useEffect(() => {
+    if (materialRef.current) {
+      const targetColor = isHovered ? hoverColor : new THREE.Color(color);
+      materialRef.current.color.copy(targetColor);
+      materialRef.current.emissive.copy(targetColor);
+    }
+  }, [isHovered, color, hoverColor]);
 
   useFrame(({ clock }) => {
-    if (meshRef.current) {
-      if (isHovered) {
-        // Create a pulsing effect using a sine wave
-        const scale = 1 + Math.sin(clock.getElapsedTime() * 5) * 0.2;
-        meshRef.current.scale.set(scale, scale, scale);
-      } else {
-        // Reset scale when not hovered
-        meshRef.current.scale.set(1, 1, 1);
-      }
+    if (meshRef.current && isHovered) {
+      // Create a pulsing effect using a sine wave only when hovered
+      const scale = 1 + Math.sin(clock.getElapsedTime() * 5) * 0.2;
+      meshRef.current.scale.set(scale, scale, scale);
+    } else if (meshRef.current) {
+      // Reset scale when not hovered
+      meshRef.current.scale.set(1, 1, 1);
     }
   });
 
@@ -39,8 +50,9 @@ function PainPointMarker({ position, isHovered, color }) { // color is now the H
     <mesh ref={meshRef} position={position}>
       <sphereGeometry args={[isHovered ? 0.07 : 0.05, 16, 16]} /> {/* Slightly larger when hovered */}
       <meshStandardMaterial
-        color={isHovered ? '#ff4d4d' : color}
-        emissive={isHovered ? '#ff4d4d' : color}
+        ref={materialRef}
+        color={color} // Set initial color declaratively
+        emissive={color} // Set initial emissive declaratively
         emissiveIntensity={isHovered ? 2 : 1.5}
         toneMapped={false}
         transparent

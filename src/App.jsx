@@ -3,6 +3,7 @@ import PainForm from './components/PainForm';
 import HumanModel from './components/HumanModel';
 import './App.css';
 import legacyPains from './assets/legacy_pains.json';
+import { supabase } from './supabaseClient';
 import improvedIcon from './assets/icons/trend_improved.png';
 import intensifiedIcon from './assets/icons/trend_intensified.png';
 import newIcon from './assets/icons/trend_new.png';
@@ -80,25 +81,61 @@ function App() {
   const [endDate, setEndDate] = useState('');
   // Initialize state from localStorage or an empty array
   const [painLogs, setPainLogs] = useState(() => {
-    try {
-      const savedLogs = localStorage.getItem('painLogs');
-      if (savedLogs) {
-        return JSON.parse(savedLogs);
-      }
-      // If no saved logs, migrate and use the legacy data
-      const migratedPains = legacyPains.map(migrateLegacyEntry);
-      const parsed = migratedPains || [];
-      // Sort logs by timestamp once on initial load
-      return parsed.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-    } catch (error) {
-      console.error("Could not parse pain logs from localStorage", error);
-      return [];
-    }
+    // Initial state is empty, data will be fetched from Supabase
+    return [];
   });
 
-  // Save to localStorage whenever painLogs changes
+  // Fetch pain logs from Supabase on component mount
   useEffect(() => {
-    localStorage.setItem('painLogs', JSON.stringify(painLogs));
+    const fetchPainLogs = async () => {
+      const { data, error } = await supabase
+        .from('pain_entries')
+        .select('*')
+        .order('timestamp', { ascending: false }); // Order by newest first
+
+      if (error) {
+        console.error('Error fetching pain logs:', error);
+        // Fallback to local storage if Supabase fails on initial load
+        try {
+          const savedLogs = localStorage.getItem('painLogs');
+          if (savedLogs) {
+            return JSON.parse(savedLogs);
+          }
+        } catch (lsError) {
+          console.error("Could not parse pain logs from localStorage fallback", lsError);
+        }
+        return [];
+      }
+
+      if (data && data.length > 0) {
+        // If data is fetched from Supabase, save it to localStorage as a cache
+        localStorage.setItem('painLogs', JSON.stringify(data));
+        setPainLogs(data);
+      } else {
+        // If no data in Supabase, but legacy data exists, use and upload it
+        const savedLogs = localStorage.getItem('painLogs');
+        const parsed = savedLogs ? JSON.parse(savedLogs) : legacyPains.map(migrateLegacyEntry);
+        if (parsed.length > 0) {
+          console.log("No Supabase data, using and uploading legacy/local data.");
+          // Upload legacy data to Supabase
+          const { error: uploadError } = await supabase.from('pain_entries').insert(parsed);
+          if (uploadError) console.error("Error uploading legacy data:", uploadError);
+          setPainLogs(parsed.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+        }
+      }
+    };
+
+    fetchPainLogs();
+  }, []); // Empty dependency array means this runs once on mount
+
+  // Keep localStorage updated as a cache, but primary source is Supabase
+  useEffect(() => {
+    if (painLogs.length > 0) {
+      localStorage.setItem('painLogs', JSON.stringify(painLogs));
+    } else {
+      // If painLogs becomes empty, clear localStorage too
+      localStorage.removeItem('painLogs');
+    }
   }, [painLogs]);
 
   const handleClearFilters = () => {
@@ -134,21 +171,52 @@ function App() {
   }, [filteredPainLogs]);
 
   const handleLogPain = (logData) => {
-    if (editingEntry) {
-      // Update existing entry
-      setPainLogs(
-        painLogs.map((log) => (log.id === editingEntry.id ? logData : log))
-      );
-    } else {
-      // Add new entry
-      setPainLogs(prevLogs => [logData, ...prevLogs].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)));
+    const upsertPainLog = async () => {
+      let error = null;
+      if (editingEntry) {
+        // Update existing entry in Supabase
+        const { error: updateError } = await supabase
+          .from('pain_entries')
+          .update(logData)
+          .eq('id', logData.id);
+        error = updateError;
+      } else {
+        // Add new entry to Supabase
+        const { error: insertError } = await supabase
+          .from('pain_entries')
+          .insert(logData);
+        error = insertError;
+      }
+
+      if (error) {
+        console.error('Error saving pain log:', error);
+      } else {
+        // Re-fetch all logs to update the UI after a successful upsert
+        const { data } = await supabase.from('pain_entries').select('*').order('timestamp', { ascending: false });
+        setPainLogs(data || []);
+      }
     }
+    upsertPainLog();
   };
 
   const handleDelete = (idToDelete) => {
-    if (window.confirm('Are you sure you want to delete this entry?')) {
-      setPainLogs(prevLogs => prevLogs.filter(log => log.id !== idToDelete));
-    }
+    const deletePainLog = async () => {
+      if (window.confirm('Are you sure you want to delete this entry?')) {
+        const { error } = await supabase
+          .from('pain_entries')
+          .delete()
+          .eq('id', idToDelete);
+
+        if (error) {
+          console.error('Error deleting pain log:', error);
+        } else {
+          // Re-fetch all logs to update the UI after a successful delete
+          const { data } = await supabase.from('pain_entries').select('*').order('timestamp', { ascending: false });
+          setPainLogs(data || []);
+        }
+      }
+    };
+    deletePainLog();
   };
 
   const handleDeleteEntry = (idToDelete) => {
@@ -220,6 +288,7 @@ function App() {
               }
             </div>
             <div className="pain-logs-container">
+              <h2>My Pain Logs</h2>
               {filteredPainLogs.length === 0 ? (
                 <p>No pain logged yet.</p>
               ) : (
