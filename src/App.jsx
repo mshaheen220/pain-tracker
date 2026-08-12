@@ -220,7 +220,6 @@ function App() {
               }
             </div>
             <div className="pain-logs-container">
-              <h2>My Pain Logs</h2>
               {filteredPainLogs.length === 0 ? (
                 <p>No pain logged yet.</p>
               ) : (
