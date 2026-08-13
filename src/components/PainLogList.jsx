@@ -1,0 +1,70 @@
+import React from 'react';
+import improvedIcon from '../assets/icons/trend_improved.png';
+import intensifiedIcon from '../assets/icons/trend_intensified.png';
+import newIcon from '../assets/icons/trend_new.png';
+import unchangedIcon from '../assets/icons/trend_unchanged.png';
+import { formatLocation, getSeverityColor } from '../utils';
+
+const trendIcons = {
+  improved: improvedIcon,
+  intensified: intensifiedIcon,
+  new: newIcon,
+  unchanged: unchangedIcon,
+};
+
+const PainLogList = ({ logs, setHoveredPainId, setFocusedPainPoint, handleEditClick }) => {
+  return (
+    <div className="pain-logs-container">
+      <h2>My Pain Logs</h2>
+      {logs.length === 0 ? (
+        <p>No pain logged yet.</p>
+      ) : (
+        <ul>
+          {logs.map((log) => (
+            <li
+              key={log.id}
+              className="pain-log-item"
+              style={{ borderLeftColor: getSeverityColor(log.severity) }}
+              onMouseEnter={() => {
+                setHoveredPainId(log.id);
+                setFocusedPainPoint(log);
+              }}
+              onMouseLeave={() => {
+                setHoveredPainId(null);
+                setFocusedPainPoint(null);
+              }}
+              onClick={() => handleEditClick(log)}>
+              <div className="pain-log-header">
+                <strong>{formatLocation(log.location)}</strong>
+                <div className="pain-log-header-right">
+                  {log.trend && trendIcons[log.trend] && (
+                    <img
+                      src={trendIcons[log.trend]}
+                      alt={log.trend}
+                      title={log.trend}
+                      className="trend-icon"
+                    />
+                  )}
+                  <span className="severity-pill" style={{ backgroundColor: getSeverityColor(log.severity) }}>
+                    {log.severity}
+                  </span>
+                </div>
+              </div>
+              <div className="pain-log-details">
+                <small>{new Date(log.timestamp).toLocaleString()}</small>
+                {log.notes && <p>Notes: {log.notes}</p>}
+                <div className="pain-log-tags">
+                  {log.isSwollen && <span className="tag">Swollen</span>}
+                  {log.isHotToTouch && <span className="tag">Hot</span>}
+                  {log.isTenderToTouch && <span className="tag">Tender</span>}
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+};
+
+export default PainLogList;

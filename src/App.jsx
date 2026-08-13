@@ -4,40 +4,11 @@ import HumanModel from './components/HumanModel';
 import './App.css';
 import Login from './components/Login';
 import { supabase } from './supabaseClient';
-import improvedIcon from './assets/icons/trend_improved.png';
-import intensifiedIcon from './assets/icons/trend_intensified.png';
-import newIcon from './assets/icons/trend_new.png';
-import unchangedIcon from './assets/icons/trend_unchanged.png';
-
-const trendIcons = {
-  improved: improvedIcon,
-  intensified: intensifiedIcon,
-  new: newIcon,
-  unchanged: unchangedIcon,
-};
-
-
-function formatLocation(location) {
-  const { bodyPart, side, specific } = location;
-  let locationString = bodyPart || 'N/A';
-
-  if (side && side !== 'center') {
-    locationString += `, ${side.charAt(0).toUpperCase() + side.slice(1)}`;
-  }
-  if (specific && specific.toLowerCase() !== bodyPart.toLowerCase()) {
-    locationString += ` (${specific})`;
-  }
-  return locationString;
-}
-
-function getSeverityColor(severity) {
-  // Maps severity from 0-10 to a hue from 120 (green) to 0 (red).
-  const hue = (10 - severity) * 12;
-  // For low severity, we want it to be less saturated.
-  const saturation = 70 + (severity * 3); // 70% to 100%
-  const lightness = 50;
-  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-}
+import DateFilter from './components/DateFilter';
+import PainLogList from './components/PainLogList';
+import { getSeverityColor } from './utils';
+import { useAuth } from './hooks/useAuth';
+import { usePainLogContext } from './contexts/PainLogContext';
 
 function App() {
   const [view, setView] = useState('model'); // 'model' or 'logs'
@@ -46,58 +17,11 @@ function App() {
   const [hoveredPainId, setHoveredPainId] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
   const [focusedPainPoint, setFocusedPainPoint] = useState(null); // New state for focused point
-  const [session, setSession] = useState(null);
-  const [profile, setProfile] = useState(null);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
-  // Initialize state from localStorage or an empty array
-  const [painLogs, setPainLogs] = useState(() => {
-    // Initial state is empty, data will be fetched from Supabase
-    return [];
-  });
+  const { painLogs, addPainLog, updatePainLog, deletePainLog } = usePainLogContext();
+  const { session, profile } = useAuth();
 
-  // Handle auth state changes
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        setSession(session);
-      }
-    );
-
-    return () => subscription.unsubscribe();
-  }, []);
-
-  // Fetch data when session changes
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!session) return;
-
-      // Fetch user profile
-      const { data: profileData, error: profileError } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', session.user.id)
-        .single();
-
-      if (profileError) console.error('Error fetching profile:', profileError);
-      else setProfile(profileData);
-
-      // Fetch pain logs
-      const { data: logsData, error: logsError } = await supabase
-        .from('pain_entries')
-        .select('*')
-        .order('timestamp', { ascending: false });
-
-      if (logsError) console.error('Error fetching pain logs:', logsError);
-      else setPainLogs(logsData || []);
-    };
-
-    fetchData();
-  }, [session]);
 
   const handleClearFilters = () => {
     setStartDate('');
@@ -132,52 +56,15 @@ function App() {
   }, [filteredPainLogs]);
 
   const handleLogPain = (logData) => {
-    const upsertPainLog = async () => {
-      let error = null;
-      if (editingEntry) {
-        // Update existing entry in Supabase
-        const { error: updateError } = await supabase
-          .from('pain_entries')
-          .update(logData)
-          .eq('id', logData.id);
-        error = updateError;
-      } else {
-        // Add new entry to Supabase
-        const { error: insertError } = await supabase
-          .from('pain_entries')
-          .insert(logData);
-        error = insertError;
-      }
-
-      if (error) {
-        console.error('Error saving pain log:', error);
-      } else {
-        // Re-fetch all logs to update the UI after a successful upsert
-        const { data } = await supabase.from('pain_entries').select('*').order('timestamp', { ascending: false });
-        setPainLogs(data || []);
-      }
+    if (editingEntry) {
+      updatePainLog(logData);
+    } else {
+      addPainLog(logData);
     }
-    upsertPainLog();
   };
 
   const handleDelete = (idToDelete) => {
-    const deletePainLog = async () => {
-      if (window.confirm('Are you sure you want to delete this entry?')) {
-        const { error } = await supabase
-          .from('pain_entries')
-          .delete()
-          .eq('id', idToDelete);
-
-        if (error) {
-          console.error('Error deleting pain log:', error);
-        } else {
-          // Re-fetch all logs to update the UI after a successful delete
-          const { data } = await supabase.from('pain_entries').select('*').order('timestamp', { ascending: false });
-          setPainLogs(data || []);
-        }
-      }
-    };
-    deletePainLog();
+    deletePainLog(idToDelete);
   };
 
   const handleDeleteEntry = (idToDelete) => {
@@ -261,72 +148,19 @@ function App() {
           />
         ) : (
           <>
-            <div className="filter-container" style={{ marginTop: '1.5rem' }}>
-              <div className="date-filters">
-                <div className="form-group">
-                  <label htmlFor="startDate">From</label>
-                  <input type="date" id="startDate" className="form-input" value={startDate} onChange={e => setStartDate(e.target.value)} />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="endDate">To</label>
-                  <input type="date" id="endDate" className="form-input" value={endDate} onChange={e => setEndDate(e.target.value)} />
-                </div>
-              </div>
-              {(startDate || endDate) &&
-                <button onClick={handleClearFilters} className="clear-filter-button">Reset Dates</button>
-              }
-            </div>
-            <div className="pain-logs-container">
-              <h2>My Pain Logs</h2>
-              {filteredPainLogs.length === 0 ? (
-                <p>No pain logged yet.</p>
-              ) : (
-                <ul>
-                  {/* Render the filtered list */}
-                  {filteredPainLogs.map((log) => (
-                    <li
-                      key={log.id}
-                      className="pain-log-item"
-                      style={{ borderLeftColor: getSeverityColor(log.severity) }} // Keep severity color
-                      onMouseEnter={() => {
-                        setHoveredPainId(log.id);
-                        setFocusedPainPoint(log); // Set focused point on hover
-                      }}
-                      onMouseLeave={() => {
-                        setHoveredPainId(null);
-                        setFocusedPainPoint(null); // Clear focused point on leave
-                      }}
-                      onClick={() => handleEditClick(log)}>
-                      <div className="pain-log-header">
-                        <strong>{formatLocation(log.location)}</strong>
-                        <div className="pain-log-header-right">
-                          {log.trend && trendIcons[log.trend] && (
-                            <img
-                              src={trendIcons[log.trend]}
-                              alt={log.trend}
-                              title={log.trend}
-                              className="trend-icon"
-                            />
-                          )}
-                          <span className="severity-pill" style={{ backgroundColor: getSeverityColor(log.severity) }}>
-                            {log.severity}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="pain-log-details">
-                        <small>{new Date(log.timestamp).toLocaleString()}</small>
-                        {log.notes && <p>Notes: {log.notes}</p>}
-                        <div className="pain-log-tags">
-                          {log.isSwollen && <span className="tag">Swollen</span>}
-                          {log.isHotToTouch && <span className="tag">Hot</span>}
-                          {log.isTenderToTouch && <span className="tag">Tender</span>}
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
+            <DateFilter
+              startDate={startDate}
+              setStartDate={setStartDate}
+              endDate={endDate}
+              setEndDate={setEndDate}
+              handleClearFilters={handleClearFilters}
+            />
+            <PainLogList
+              logs={filteredPainLogs}
+              setHoveredPainId={setHoveredPainId}
+              setFocusedPainPoint={setFocusedPainPoint}
+              handleEditClick={handleEditClick}
+            />
           </>
         )}
       </div>
@@ -335,3 +169,4 @@ function App() {
 }
 
 export default App;
+

@@ -1,21 +1,6 @@
 import React, { useState, useEffect } from 'react';
-
-/**
- * A form component for users to log their pain.
- *
- * @param {object} props - The component's props.
- * @param {function} props.onClose - Callback function to cancel and close the form.
- * @param {function} props.onLogPain - Callback function to execute when the form is submitted.
- *                                     It receives an object with pain data.
- * @param {function} props.onDelete - Callback function to delete the current entry.
- * @param {object} [props.initialData] - The initial data to populate the form for editing.
- * @param {object} [props.initialCoordinates] - The initial coordinates for the pain location.
- */
-const bodyParts = [
-  "Head", "Neck", "Shoulder", "Arm", "Elbow", "Forearm", "Wrist", "Hand", "Finger",
-  "Chest", "Upper Back", "Lower Back", "Abdomen", "Hip", "Thigh", "Knee",
-  "Lower Leg", "Ankle", "Foot", "Toe"
-];
+import LocationFields from './LocationFields';
+import SymptomCheckboxes from './SymptomCheckboxes';
 
 const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinates }) => {
   const [severity, setSeverity] = useState(5); // Renamed from painLevel
@@ -110,39 +95,22 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
           className="form-range"
         />
       </div>
-      <div className="form-group">
-        <label htmlFor="bodyPart">Body Part:</label>
-        <select id="bodyPart" className="form-select" value={bodyPart} onChange={(e) => setBodyPart(e.target.value)} required>
-          <option value="">Select a body part</option>
-          {bodyParts.map(part => <option key={part} value={part}>{part}</option>)}
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="side">Side:</label>
-        <select id="side" className="form-select" value={side} onChange={(e) => setSide(e.target.value)}>
-          <option value="center">Center / Both</option>
-          <option value="left">Left</option>
-          <option value="right">Right</option>
-        </select>
-      </div>
-      <div className="form-group">
-        <label htmlFor="specificLocation">Specific Location (optional):</label>
-        <input id="specificLocation" className="form-input" type="text" value={specificLocation} onChange={(e) => setSpecificLocation(e.target.value)} placeholder="e.g., Middle knuckle" />
-      </div>
-      <div className="form-group-checkboxes">
-        <div className="checkbox-group">
-          <input type="checkbox" id="isSwollen" checked={isSwollen} onChange={(e) => setIsSwollen(e.target.checked)} />
-          <label htmlFor="isSwollen">Swollen</label>
-        </div>
-        <div className="checkbox-group">
-          <input type="checkbox" id="isHotToTouch" checked={isHotToTouch} onChange={(e) => setIsHotToTouch(e.target.checked)} />
-          <label htmlFor="isHotToTouch">Hot to Touch</label>
-        </div>
-        <div className="checkbox-group">
-          <input type="checkbox" id="isTenderToTouch" checked={isTenderToTouch} onChange={(e) => setIsTenderToTouch(e.target.checked)} />
-          <label htmlFor="isTenderToTouch">Tender to Touch</label>
-        </div>
-      </div>
+      <LocationFields
+        bodyPart={bodyPart}
+        setBodyPart={setBodyPart}
+        side={side}
+        setSide={setSide}
+        specificLocation={specificLocation}
+        setSpecificLocation={setSpecificLocation}
+      />
+      <SymptomCheckboxes
+        isSwollen={isSwollen}
+        setIsSwollen={setIsSwollen}
+        isHotToTouch={isHotToTouch}
+        setIsHotToTouch={setIsHotToTouch}
+        isTenderToTouch={isTenderToTouch}
+        setIsTenderToTouch={setIsTenderToTouch}
+      />
       <div className="form-group">
         <label htmlFor="trend">Trend:</label>
         <select id="trend" className="form-select" value={trend} onChange={(e) => setTrend(e.target.value)}>
@@ -175,3 +143,4 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
 };
 
 export default PainForm;
+

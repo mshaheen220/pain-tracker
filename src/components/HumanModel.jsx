@@ -1,7 +1,8 @@
 import React, { Suspense, useEffect, useMemo, useRef } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Html } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three'; // Import THREE
+import { useCameraFocus } from '../hooks/useCameraFocus';
 
 function Model(props) {
   const { scene } = useGLTF(`${import.meta.env.BASE_URL}human_body.glb`);
@@ -63,77 +64,8 @@ function PainPointMarker({ position, isHovered, color }) { // color is now the H
 }
 
 function SceneContent({ onPointClick, clickedPoint, painPoints, hoveredPainId, focusedPainPoint }) {
-  const { camera } = useThree();
   const controlsRef = useRef();
-
-  const targetPosition = useRef(new THREE.Vector3(0, 0, 4.2)); // Initial camera position
-  const targetLookAt = useRef(new THREE.Vector3(0, 0, 0)); // Initial look-at (center of model)
-  const isAnimatingCamera = useRef(false);
-
-  useEffect(() => {
-    if (focusedPainPoint && focusedPainPoint.location.coordinates) {
-      const coords = focusedPainPoint.location.coordinates;
-      const pointVec = new THREE.Vector3(coords.x, coords.y, coords.z);
-      const modelCenter = new THREE.Vector3(0, 0, 0); // A rough center for the model
-
-      // Vector from the point to the camera
-      const pointToCamera = camera.position.clone().sub(pointVec);
-      // Vector from the point to the model's center (approximates the surface normal)
-      const pointToCenter = modelCenter.clone().sub(pointVec);
-
-      // If the point is on the "back" relative to the camera, we need to swing around
-      if (pointToCamera.dot(pointToCenter) > 0.1) { // Added a small threshold
-        // Calculate a new camera position that is behind the point, looking at it.
-        const newPos = pointVec.clone().sub(modelCenter).setLength(2.5).add(pointVec);
-
-        // Prevent camera from going below the model's feet
-        if (newPos.y < -1.5) {
-          newPos.y = -1.5;
-        }
-
-        targetPosition.current.copy(newPos);
-      } else {
-        // Otherwise, just zoom in from the current camera angle
-        const newPos = pointToCamera.setLength(2).add(pointVec);
-        targetPosition.current.copy(newPos);
-      }
-
-      targetLookAt.current.copy(pointVec);
-      isAnimatingCamera.current = true;
-      if (controlsRef.current) {
-        controlsRef.current.enabled = false; // Disable controls during animation
-      }
-    } else {
-      // Reset to default view
-      targetPosition.current.set(0, 0, 4.2); // Default camera position
-      targetLookAt.current.set(0, 0, 0); // Default look-at
-      isAnimatingCamera.current = true;
-    }
-  }, [focusedPainPoint]);
-
-  useFrame(() => {
-    if (isAnimatingCamera.current) {
-      const speed = 0.05; // Animation speed
-
-      // Interpolate camera position
-      camera.position.lerp(targetPosition.current, speed);
-
-      // Interpolate OrbitControls target
-      if (controlsRef.current) {
-        controlsRef.current.target.lerp(targetLookAt.current, speed);
-        controlsRef.current.update(); // Important to update controls after changing target
-      }
-
-      // Check if animation is close to completion
-      if (camera.position.distanceTo(targetPosition.current) < 0.01 &&
-          (controlsRef.current && controlsRef.current.target.distanceTo(targetLookAt.current) < 0.01)) {
-        isAnimatingCamera.current = false;
-        if (controlsRef.current) {
-          controlsRef.current.enabled = true; // Re-enable controls after animation
-        }
-      }
-    }
-  });
+  useCameraFocus(focusedPainPoint, controlsRef);
 
   return (
     <Suspense fallback={null}>
