@@ -6,12 +6,14 @@ import Login from './components/Login';
 import { supabase } from './supabaseClient';
 import DateFilter from './components/DateFilter';
 import PainLogList from './components/PainLogList';
+import TabularData from './components/TabularData';
+import Snapshots from './components/Snapshots';
 import { getSeverityColor } from './utils';
 import { useAuth } from './hooks/useAuth';
 import { usePainLogContext } from './contexts/PainLogContext';
 
 function App() {
-  const [view, setView] = useState('model'); // 'model' or 'logs'
+  const [view, setView] = useState('3d-model'); // '3d-model', 'tabular-data', or 'snapshots'
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState(null);
   const [hoveredPainId, setHoveredPainId] = useState(null);
@@ -19,21 +21,27 @@ function App() {
   const [focusedPainPoint, setFocusedPainPoint] = useState(null); // New state for focused point
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [selectedLogId, setSelectedLogId] = useState(null); // For tabular data selection
   const { painLogs, addPainLog, updatePainLog, deletePainLog } = usePainLogContext();
   const { session, profile } = useAuth();
 
+  useEffect(() => {
+    // Reset selected log when date range changes
+    setSelectedLogId(null);
+  }, [startDate, endDate]);
 
   const handleClearFilters = () => {
     setStartDate('');
     setEndDate('');
+    setSelectedLogId(null);
   };
 
   const filteredPainLogs = useMemo(() => {
     return painLogs.filter(log => {
       if (!startDate && !endDate) return true;
-      
+
       const logDate = new Date(log.timestamp);
-      
+
       // For date comparison, we want to ignore the time part.
       // Setting hours to 0 ensures we compare dates correctly.
       const start = startDate ? new Date(startDate) : null;
@@ -47,6 +55,13 @@ function App() {
       return true;
     });
   }, [painLogs, startDate, endDate]);
+
+  const displayedLogs = useMemo(() => {
+    if (selectedLogId) {
+      return filteredPainLogs.filter(log => log.id === selectedLogId);
+    }
+    return filteredPainLogs;
+  }, [filteredPainLogs, selectedLogId]);
 
   const painPointsWithColor = useMemo(() => {
     return filteredPainLogs.map(log => ({
@@ -106,29 +121,86 @@ function App() {
     return <Login />;
   }
 
+  const renderRightPanel = () => {
+    if (isFormOpen) {
+      return (
+        <PainForm
+          initialData={editingEntry}
+          initialCoordinates={clickedCoordinates}
+          onClose={onClose}
+          onLogPain={handleLogPain}
+          onDelete={handleDelete}
+        />
+      );
+    }
+
+    return (
+      <>
+        <DateFilter
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          handleClearFilters={handleClearFilters}
+        />
+        {selectedLogId && (
+          <button 
+            className="clear-selection-button"
+            onClick={() => setSelectedLogId(null)}
+          >
+            Clear Selection
+          </button>
+        )}
+        <PainLogList
+          logs={displayedLogs}
+          setHoveredPainId={setHoveredPainId}
+          setFocusedPainPoint={setFocusedPainPoint}
+          handleEditClick={handleEditClick}
+        />
+      </>
+    );
+  }
+
   return (
     <div className={`app-container view-${view}`}>
-      <div className="mobile-nav">
-        <button
-          className={`mobile-nav-button ${view === 'model' ? 'active' : ''}`}
-          onClick={() => setView('model')}>
-          Model
-        </button>
-        <button
-          className={`mobile-nav-button ${view === 'logs' ? 'active' : ''}`}
-          onClick={() => setView('logs')}>
-          Logs
-        </button>
-      </div>
       <div className="left-panel">
+        <div className="desktop-nav">
+          <button
+            className={`desktop-nav-button ${view === '3d-model' ? 'active' : ''}`}
+            onClick={() => setView('3d-model')}>
+            3D Model
+          </button>
+          <button
+            className={`desktop-nav-button ${view === 'tabular-data' ? 'active' : ''}`}
+            onClick={() => setView('tabular-data')}>
+            Tabular Data
+          </button>
+{/*           <button
+            className={`desktop-nav-button ${view === 'snapshots' ? 'active' : ''}`}
+            onClick={() => setView('snapshots')}>
+            Snapshots
+          </button>
+ */}        </div>
         <h1>Pain Tracker</h1>
-        <HumanModel
-          onPointClick={handleModelInteraction}
-          clickedPoint={isFormOpen ? clickedCoordinates : null}
-          hoveredPainId={hoveredPainId}
-          focusedPainPoint={focusedPainPoint} // Pass focused point to HumanModel
-          painPoints={painPointsWithColor}
-        />
+        {view === '3d-model' && (
+          <HumanModel
+            onPointClick={handleModelInteraction}
+            clickedPoint={isFormOpen ? clickedCoordinates : null}
+            hoveredPainId={hoveredPainId}
+            focusedPainPoint={focusedPainPoint} // Pass focused point to HumanModel
+            painPoints={painPointsWithColor}
+          />
+        )}
+        {view === 'tabular-data' && (
+          <TabularData 
+            data={filteredPainLogs}
+            onLogClick={setSelectedLogId}
+            selectedLogId={selectedLogId}
+          />
+        )}
+        {view === 'snapshots' && (
+          <Snapshots logs={filteredPainLogs} />
+        )}
       </div>
       <button
         onClick={() => supabase.auth.signOut()}
@@ -138,31 +210,7 @@ function App() {
       </button>
 
       <div className={`right-panel ${isFormOpen ? 'form-open' : ''}`}>
-        {isFormOpen ? (
-          <PainForm
-            initialData={editingEntry}
-            initialCoordinates={clickedCoordinates}
-            onClose={onClose}
-            onLogPain={handleLogPain}
-            onDelete={handleDelete}
-          />
-        ) : (
-          <>
-            <DateFilter
-              startDate={startDate}
-              setStartDate={setStartDate}
-              endDate={endDate}
-              setEndDate={setEndDate}
-              handleClearFilters={handleClearFilters}
-            />
-            <PainLogList
-              logs={filteredPainLogs}
-              setHoveredPainId={setHoveredPainId}
-              setFocusedPainPoint={setFocusedPainPoint}
-              handleEditClick={handleEditClick}
-            />
-          </>
-        )}
+        {renderRightPanel()}
       </div>
     </div>
   );
