@@ -40,6 +40,7 @@ function getSeverityColor(severity) {
 }
 
 function App() {
+  const [view, setView] = useState('model'); // 'model' or 'logs'
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState(null);
   const [hoveredPainId, setHoveredPainId] = useState(null);
@@ -219,7 +220,19 @@ function App() {
   }
 
   return (
-    <div className="app-container">
+    <div className={`app-container view-${view}`}>
+      <div className="mobile-nav">
+        <button
+          className={`mobile-nav-button ${view === 'model' ? 'active' : ''}`}
+          onClick={() => setView('model')}>
+          Model
+        </button>
+        <button
+          className={`mobile-nav-button ${view === 'logs' ? 'active' : ''}`}
+          onClick={() => setView('logs')}>
+          Logs
+        </button>
+      </div>
       <div className="left-panel">
         <h1>Pain Tracker</h1>
         <HumanModel
@@ -237,7 +250,7 @@ function App() {
         Sign Out
       </button>
 
-      <div className="right-panel">
+      <div className={`right-panel ${isFormOpen ? 'form-open' : ''}`}>
         {isFormOpen ? (
           <PainForm
             initialData={editingEntry}
