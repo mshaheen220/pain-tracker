@@ -1,0 +1,462 @@
+[
+  {
+    "id": "head_face",
+    "name": "Head & Face",
+    "basicParts": [
+      {
+        "id": "head",
+        "name": "Head & Scalp",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Forehead",
+          "Temple",
+          "Top of Head (Crown)",
+          "Back of Head (Upper)",
+          "Base of Skull (Occipital / Hairline)"
+        ]
+      },
+      {
+        "id": "face",
+        "name": "Face & Sinuses",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Eyebrow Area",
+          "Eye / Eye Socket",
+          "Under Eye / Sinus Area",
+          "Nose Bridge",
+          "Nostril Area",
+          "Upper Cheek",
+          "Lower Cheek",
+          "Jawline",
+          "Jaw Joint (TMJ / In Front of Ear)",
+          "Chin"
+        ]
+      },
+      {
+        "id": "mouth",
+        "name": "Mouth & Teeth",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Upper Teeth / Gums",
+          "Lower Teeth / Gums",
+          "Tongue",
+          "Roof of Mouth (Palate)",
+          "Lips",
+          "Inside Cheek"
+        ]
+      },
+      {
+        "id": "ear",
+        "name": "Ear",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Outer Ear (Cartilage)",
+          "Earlobe",
+          "Behind the Ear",
+          "Inside Ear Canal"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "neck",
+    "name": "Neck & Upper Traps",
+    "basicParts": [
+      {
+        "id": "neck_general",
+        "name": "Neck",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Front (Throat / Adam's Apple)",
+          "Side of Neck",
+          "Back of Neck (Upper)",
+          "Back of Neck (Base)",
+          "Top Ridge of Shoulder (Upper Trap)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "torso",
+    "name": "Torso & Trunk",
+    "basicParts": [
+      {
+        "id": "collarbone",
+        "name": "Collarbone",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Inner End (Near Breastbone)",
+          "Middle Collarbone",
+          "Outer End (Near Shoulder Tip)"
+        ]
+      },
+      {
+        "id": "chest",
+        "name": "Chest",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Upper Chest",
+          "Breastbone (Sternum)",
+          "Breast / Pectoral Area",
+          "Nipple Area",
+          "Front Ribcage (Upper)",
+          "Front Ribcage (Lower / Under Breast)"
+        ]
+      },
+      {
+        "id": "ribs_side",
+        "name": "Side Ribs & Flank",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Upper Side Ribs (Under Armpit)",
+          "Mid Side Ribs",
+          "Lower / Floating Ribs"
+        ]
+      },
+      {
+        "id": "abdomen",
+        "name": "Abdomen / Stomach",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Upper Stomach (Below Sternum)",
+          "Upper Side (Under Ribs)",
+          "Middle Stomach (Navel Area)",
+          "Lower Stomach (Above Pubic Bone)",
+          "Lower Side (Near Hip Bone)"
+        ]
+      },
+      {
+        "id": "back",
+        "name": "Back",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Upper Back (Spine)",
+          "Shoulder Blade (Over the Bone)",
+          "Inner Shoulder Blade (Between Blade & Spine)",
+          "Mid Back (Spine)",
+          "Mid Back (Muscle Next to Spine)",
+          "Lower Back (Spine)",
+          "Lower Back (Muscle / Flank)",
+          "SI Joint (Dimple Area / Top of Buttock)",
+          "Tailbone (Coccyx)"
+        ]
+      },
+      {
+        "id": "pelvis_groin",
+        "name": "Pelvis, Groin & Buttock",
+        "allowedSides": ["Left", "Center", "Right"],
+        "specificParts": [
+          "Front Hip Crest (Beltline Bone)",
+          "Groin Crease (Front Fold)",
+          "Pubic Bone Area",
+          "Upper Buttock / Glute",
+          "Outer Buttock / Piriformis Area",
+          "Sit Bone (Bottom of Buttock)",
+          "Perineum (Between Groin & Anus)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "shoulder_arm",
+    "name": "Shoulder & Arm",
+    "basicParts": [
+      {
+        "id": "shoulder",
+        "name": "Shoulder",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front of Shoulder",
+          "Top Point of Shoulder",
+          "Outer Side (Deltoid Muscle)",
+          "Back of Shoulder"
+        ]
+      },
+      {
+        "id": "armpit",
+        "name": "Armpit",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Center Hollow",
+          "Front Fold (Chest Border)",
+          "Back Fold (Back Border)"
+        ]
+      },
+      {
+        "id": "upper_arm",
+        "name": "Upper Arm",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front (Bicep)",
+          "Back (Tricep)",
+          "Outer Side",
+          "Inner Side"
+        ]
+      },
+      {
+        "id": "elbow",
+        "name": "Elbow",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front Crease (Inside Bend)",
+          "Outer Elbow Bone (Tennis Elbow Area)",
+          "Inner Elbow Bone (Golfer's Elbow Area)",
+          "Point of Elbow (Back Tip)"
+        ]
+      },
+      {
+        "id": "forearm",
+        "name": "Forearm",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front / Belly (Palm Side)",
+          "Back (Top of Forearm)",
+          "Thumb Side Edge",
+          "Pinky Side Edge"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hand_wrist",
+    "name": "Hand & Fingers",
+    "basicParts": [
+      {
+        "id": "wrist",
+        "name": "Wrist",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front (Palm / Carpal Tunnel Area)",
+          "Back (Top of Wrist)",
+          "Thumb Side (Bone / Tendon)",
+          "Pinky Side Bone"
+        ]
+      },
+      {
+        "id": "hand_body",
+        "name": "Hand Body & Palm",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Center of Palm",
+          "Base of Thumb Pad (Thick Muscle)",
+          "Outer Palm Edge (Pinky Side)",
+          "Back of Hand",
+          "Webbing Between Thumb & Index"
+        ]
+      },
+      {
+        "id": "thumb",
+        "name": "Thumb",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint (At Wrist)",
+          "Middle Knuckle",
+          "End Knuckle",
+          "Fingertip / Pad",
+          "Nail Area"
+        ]
+      },
+      {
+        "id": "index_finger",
+        "name": "Index Finger",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Knuckle (Hand Joint)",
+          "Middle Knuckle",
+          "End Knuckle",
+          "Fingertip / Pad",
+          "Nail Area",
+          "Webbing Next to Middle Finger"
+        ]
+      },
+      {
+        "id": "middle_finger",
+        "name": "Middle Finger",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Knuckle (Hand Joint)",
+          "Middle Knuckle",
+          "End Knuckle",
+          "Fingertip / Pad",
+          "Nail Area",
+          "Webbing Next to Ring Finger"
+        ]
+      },
+      {
+        "id": "ring_finger",
+        "name": "Ring Finger",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Knuckle (Hand Joint)",
+          "Middle Knuckle",
+          "End Knuckle",
+          "Fingertip / Pad",
+          "Nail Area",
+          "Webbing Next to Pinky"
+        ]
+      },
+      {
+        "id": "pinky_finger",
+        "name": "Pinky Finger",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Knuckle (Hand Joint)",
+          "Middle Knuckle",
+          "End Knuckle",
+          "Fingertip / Pad",
+          "Nail Area"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "leg_knee",
+    "name": "Leg & Knee",
+    "basicParts": [
+      {
+        "id": "hip_joint",
+        "name": "Hip Joint",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Outer Hip Bone (Bursa Area)",
+          "Front Hip Crease",
+          "Deep Groin Pain"
+        ]
+      },
+      {
+        "id": "thigh",
+        "name": "Thigh",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front (Quad)",
+          "Back (Hamstring)",
+          "Outer Side (IT Band Area)",
+          "Inner Thigh (Groin/Adductor)"
+        ]
+      },
+      {
+        "id": "knee",
+        "name": "Knee",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Kneecap (Direct Front)",
+          "Top of Kneecap (Quad Tendon)",
+          "Below Kneecap (Patellar Tendon / Shin Bump)",
+          "Inner Side Joint Line",
+          "Outer Side Joint Line",
+          "Back of Knee (Hollow Bend)"
+        ]
+      },
+      {
+        "id": "lower_leg",
+        "name": "Lower Leg",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front Shin Bone",
+          "Outer Shin Muscle",
+          "Calf (Upper / Main Muscle)",
+          "Calf (Lower / Soleus)",
+          "Achilles Tendon (Back of Ankle)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "foot_ankle",
+    "name": "Foot & Toes",
+    "basicParts": [
+      {
+        "id": "ankle",
+        "name": "Ankle",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Front Crease (Top of Ankle)",
+          "Outer Ankle Bone",
+          "Inner Ankle Bone",
+          "Back of Ankle (Around Achilles)"
+        ]
+      },
+      {
+        "id": "foot",
+        "name": "Foot Body & Sole",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Top of Foot (Instep)",
+          "Bottom of Heel (Plantar Area)",
+          "Back of Heel (Heel Bone / Spur Area)",
+          "Arch (Bottom Inner)",
+          "Ball of Foot (Under Toes)",
+          "Outer Edge of Foot"
+        ]
+      },
+      {
+        "id": "big_toe",
+        "name": "Big Toe",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint (Bunion Area / Ball of Toe)",
+          "End Joint",
+          "Toe Pad / Bottom",
+          "Top of Toe",
+          "Nail Area",
+          "Webbing / Space Next to Second Toe"
+        ]
+      },
+      {
+        "id": "second_toe",
+        "name": "Second Toe",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint",
+          "Middle Joint (Hammertoe Area)",
+          "End Joint",
+          "Toe Pad / Bottom",
+          "Top of Toe",
+          "Nail Area",
+          "Webbing / Space Next to Third Toe"
+        ]
+      },
+      {
+        "id": "third_toe",
+        "name": "Third Toe",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint",
+          "Middle Joint",
+          "End Joint",
+          "Toe Pad / Bottom",
+          "Top of Toe",
+          "Nail Area",
+          "Webbing / Space Next to Fourth Toe"
+        ]
+      },
+      {
+        "id": "fourth_toe",
+        "name": "Fourth Toe",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint",
+          "Middle Joint",
+          "End Joint",
+          "Toe Pad / Bottom",
+          "Top of Toe",
+          "Nail Area",
+          "Webbing / Space Next to Pinky Toe"
+        ]
+      },
+      {
+        "id": "pinky_toe",
+        "name": "Pinky Toe",
+        "allowedSides": ["Left", "Right"],
+        "specificParts": [
+          "Base Joint (Bunionette Area)",
+          "Middle Joint",
+          "End Joint",
+          "Toe Pad / Bottom",
+          "Top of Toe",
+          "Nail Area"
+        ]
+      }
+    ]
+  }
+]

@@ -1,6 +1,6 @@
 export function getSeverityColor(severity) {
-  // Maps severity from 0-10 to a hue from 120 (green) to 0 (red).
-  const hue = (10 - severity) * 12;
+  // Maps severity from 0-10 to a hue from 60 (yellow) to 0 (red).
+  const hue = 60 - (severity * 6);
   // For low severity, we want it to be less saturated.
   const saturation = 70 + (severity * 3); // 70% to 100%
   const lightness = 50;

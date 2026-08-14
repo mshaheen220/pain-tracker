@@ -1,10 +1,8 @@
 .app-container {
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  padding: 2rem;
-  gap: 2rem;
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure it takes full viewport height */
+  justify-content: space-between; /* Pushes footer to the bottom */
 }
 
 .mobile-nav {
@@ -60,6 +58,15 @@
 .mobile-nav-button.active {
   background-color: #2d3748;
   color: #fff;
+}
+
+.main-content {
+  flex: 1; /* Allows main content to grow and push footer down */
+  display: flex;
+  flex-direction: row; /* Default for desktop */
+  align-items: flex-start;
+  padding: 2rem;
+  gap: 2rem;
 }
 
 .left-panel {
@@ -325,12 +332,12 @@ h1 {
 }
 /* Mobile Styles */
 @media (max-width: 768px) {
-  .app-container {
+  .main-content {
     flex-direction: column;
     padding: 1rem;
     padding-bottom: 70px; /* Space for mobile nav */
     height: auto;
-    min-height: 100vh;
+    min-height: calc(100vh - 70px - 50px); /* Adjust for footer and mobile nav */
   }
 
   .left-panel, .right-panel {
@@ -407,4 +414,23 @@ h1 {
 .clickable-cell.selected {
   border: 2px solid var(--primary-color); /* Highlight selected cell */
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+}
+
+.app-footer {
+  background-color: var(--background-color);
+  color: #a0aec0; /* Lighter text for footer */
+  padding: 1rem 2rem;
+  text-align: center;
+  font-size: 0.9rem;
+  border-top: 1px solid var(--border-color);
+  margin-top: auto; /* Pushes the footer to the bottom if parent is flex column */
+}
+
+.app-footer a {
+  color: #a0aec0;
+  text-decoration: underline;
+}
+
+.app-footer a:hover {
+  color: var(--primary-color);
 }

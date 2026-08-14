@@ -11,8 +11,10 @@ import Snapshots from './components/Snapshots';
 import { getSeverityColor } from './utils';
 import { useAuth } from './hooks/useAuth';
 import { usePainLogContext } from './contexts/PainLogContext';
+import packageJson from '../package.json';
 
 function App() {
+  const packageVersion = packageJson.version;
   const [view, setView] = useState('3d-model'); // '3d-model', 'tabular-data', or 'snapshots'
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [clickedCoordinates, setClickedCoordinates] = useState(null);
@@ -163,7 +165,8 @@ function App() {
 
   return (
     <div className={`app-container view-${view}`}>
-      <div className="left-panel">
+      <div className="main-content">
+        <div className="left-panel">
         <div className="desktop-nav">
           <button
             className={`desktop-nav-button ${view === '3d-model' ? 'active' : ''}`}
@@ -212,6 +215,12 @@ function App() {
       <div className={`right-panel ${isFormOpen ? 'form-open' : ''}`}>
         {renderRightPanel()}
       </div>
+      </div> {/* End of main-content */}
+      <footer className="app-footer">
+        <p>
+          &copy; 2026 <a href="https://github.com/mshaheen220/pain-tracker" target="_blank" rel="noopener noreferrer">Michael Shaheen</a>. Version {packageVersion}.{' '}
+        </p>
+      </footer>
     </div>
   );
 }
