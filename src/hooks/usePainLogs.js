@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
+import { useAuth } from './useAuth'; // import useAuth
 
 export function usePainLogs() {
   const [painLogs, setPainLogs] = useState([]);
+  const { session } = useAuth(); // get session
 
   useEffect(() => {
     const fetchPainLogs = async () => {
+      if (!session) { // only fetch if session exists
+        setPainLogs([]); // clear logs if no session
+        return;
+      }
+
       const { data, error } = await supabase
         .from('pain_entries')
         .select('*')
@@ -19,7 +26,7 @@ export function usePainLogs() {
     };
 
     fetchPainLogs();
-  }, []);
+  }, [session]); // re-run on session change
 
   const addPainLog = async (logData) => {
     const { error } = await supabase.from('pain_entries').insert(logData);
