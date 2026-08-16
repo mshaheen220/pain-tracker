@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useMemo, useRef } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { OrbitControls, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF, GizmoHelper, GizmoViewport } from '@react-three/drei';
 import * as THREE from 'three'; // Import THREE
 import { useCameraFocus } from '../hooks/useCameraFocus';
 
@@ -106,6 +106,12 @@ function SceneContent({ onPointClick, clickedPoint, painPoints, hoveredPainId, f
         <planeGeometry args={[10, 10]} />
         <shadowMaterial opacity={0.3} />
       </mesh>
+      <GizmoHelper
+        alignment="bottom-right" // widget alignment within scene
+        margin={[80, 80]} // widget margins (x, y)
+      >
+        <GizmoViewport axisColors={['#9d4b4b', '#2f7f4f', '#3b5b9d']} labelColor="white" />
+      </GizmoHelper>
     </Suspense>
   );
 }

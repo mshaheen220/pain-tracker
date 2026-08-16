@@ -3,3 +3,5 @@ export const bodyParts = [
   "Chest", "Upper Back", "Lower Back", "Abdomen", "Hip", "Thigh", "Knee",
   "Lower Leg", "Ankle", "Foot", "Toe"
 ];
+
+export const GLOBAL_PAIN_TYPES = ['global', 'General Note', 'Overall Pain'];

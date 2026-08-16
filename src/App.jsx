@@ -12,6 +12,7 @@ import { getSeverityColor } from './utils';
 import { useAuth } from './hooks/useAuth';
 import { usePainLogContext } from './contexts/PainLogContext';
 import packageJson from '../package.json';
+import { GLOBAL_PAIN_TYPES } from './data/constants';
 
 function App() {
   const packageVersion = packageJson.version;
@@ -24,6 +25,7 @@ function App() {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [selectedLogId, setSelectedLogId] = useState(null); // For tabular data selection
+  const [showOnlyGlobal, setShowOnlyGlobal] = useState(false);
   const { painLogs, addPainLog, updatePainLog, deletePainLog } = usePainLogContext();
   const { session, profile } = useAuth();
 
@@ -36,10 +38,16 @@ function App() {
     setStartDate('');
     setEndDate('');
     setSelectedLogId(null);
+    setShowOnlyGlobal(false);
+  };
+
+  const handleShowGlobal = () => {
+    setShowOnlyGlobal(true);
+    setSelectedLogId(null);
   };
 
   const filteredPainLogs = useMemo(() => {
-    return painLogs.filter(log => {
+    let logs = painLogs.filter(log => {
       if (!startDate && !endDate) return true;
 
       const logDate = new Date(log.timestamp);
@@ -56,7 +64,13 @@ function App() {
       if (end && logDate > end) return false;
       return true;
     });
-  }, [painLogs, startDate, endDate]);
+
+    if (showOnlyGlobal) {
+      return logs.filter(log => GLOBAL_PAIN_TYPES.includes(log.location.bodyPart));
+    }
+
+    return logs;
+  }, [painLogs, startDate, endDate, showOnlyGlobal]);
 
   const displayedLogs = useMemo(() => {
     if (selectedLogId) {
@@ -66,10 +80,13 @@ function App() {
   }, [filteredPainLogs, selectedLogId]);
 
   const painPointsWithColor = useMemo(() => {
-    return filteredPainLogs.map(log => ({
+    // Filter out global logs from being displayed on the 3D model
+    return filteredPainLogs
+      .filter(log => !GLOBAL_PAIN_TYPES.includes(log.location.bodyPart))
+      .map(log => ({
         ...log,
         color: getSeverityColor(log.severity)
-    }));
+      }));
   }, [filteredPainLogs]);
 
   const handleLogPain = (logData) => {
@@ -109,7 +126,7 @@ function App() {
     if (profile?.role !== 'admin') return;
 
     setEditingEntry(log);
-    setClickedCoordinates(log.location.coordinates); // Also set coordinates for the marker
+    setClickedCoordinates(GLOBAL_PAIN_TYPES.includes(log.location.bodyPart) ? null : log.location.coordinates); // Also set coordinates for the marker
     setIsFormOpen(true);
   };
 
@@ -145,19 +162,21 @@ function App() {
           setEndDate={setEndDate}
           handleClearFilters={handleClearFilters}
         />
-        {selectedLogId && (
+        {(selectedLogId || showOnlyGlobal) && (
           <button 
             className="clear-selection-button"
-            onClick={() => setSelectedLogId(null)}
+            onClick={handleClearFilters}
           >
             Clear Selection
           </button>
         )}
         <PainLogList
           logs={displayedLogs}
+          allLogsForPeriod={filteredPainLogs}
           setHoveredPainId={setHoveredPainId}
           setFocusedPainPoint={setFocusedPainPoint}
           handleEditClick={handleEditClick}
+          onShowGlobal={handleShowGlobal}
         />
       </>
     );
@@ -166,55 +185,57 @@ function App() {
   return (
     <div className={`app-container view-${view}`}>
       <div className="main-content">
-        <div className="left-panel">
-        <div className="desktop-nav">
+        <div className={`panels-container ${view === '3d-model' ? 'align-panels-center' : ''}`}>
+          <div className="left-panel">
+            <div className="desktop-nav">
+              <button
+                className={`desktop-nav-button ${view === '3d-model' ? 'active' : ''}`}
+                onClick={() => setView('3d-model')}>
+                3D Model
+              </button>
+              <button
+                className={`desktop-nav-button ${view === 'tabular-data' ? 'active' : ''}`}
+                onClick={() => setView('tabular-data')}>
+                Tabular Data
+              </button>
+              {/* <button
+                className={`desktop-nav-button ${view === 'snapshots' ? 'active' : ''}`}
+                onClick={() => setView('snapshots')}>
+                Snapshots
+              </button> */}
+            </div>
+            <h1>Pain Tracker</h1>
+            {view === '3d-model' && (
+              <HumanModel
+                onPointClick={handleModelInteraction}
+                clickedPoint={isFormOpen ? clickedCoordinates : null}
+                hoveredPainId={hoveredPainId}
+                focusedPainPoint={focusedPainPoint} // Pass focused point to HumanModel
+                painPoints={painPointsWithColor}
+              />
+            )}
+            {view === 'tabular-data' && (
+              <TabularData
+                data={filteredPainLogs}
+                onLogClick={setSelectedLogId}
+                selectedLogId={selectedLogId}
+              />
+            )}
+            {view === 'snapshots' && (
+              <Snapshots logs={filteredPainLogs} />
+            )}
+          </div>
           <button
-            className={`desktop-nav-button ${view === '3d-model' ? 'active' : ''}`}
-            onClick={() => setView('3d-model')}>
-            3D Model
+            onClick={() => supabase.auth.signOut()}
+            className="logout-button"
+            style={{ position: 'absolute', top: '2.5rem', right: '2.5rem' }}>
+            Sign Out
           </button>
-          <button
-            className={`desktop-nav-button ${view === 'tabular-data' ? 'active' : ''}`}
-            onClick={() => setView('tabular-data')}>
-            Tabular Data
-          </button>
-{/*           <button
-            className={`desktop-nav-button ${view === 'snapshots' ? 'active' : ''}`}
-            onClick={() => setView('snapshots')}>
-            Snapshots
-          </button>
- */}        </div>
-        <h1>Pain Tracker</h1>
-        {view === '3d-model' && (
-          <HumanModel
-            onPointClick={handleModelInteraction}
-            clickedPoint={isFormOpen ? clickedCoordinates : null}
-            hoveredPainId={hoveredPainId}
-            focusedPainPoint={focusedPainPoint} // Pass focused point to HumanModel
-            painPoints={painPointsWithColor}
-          />
-        )}
-        {view === 'tabular-data' && (
-          <TabularData 
-            data={filteredPainLogs}
-            onLogClick={setSelectedLogId}
-            selectedLogId={selectedLogId}
-          />
-        )}
-        {view === 'snapshots' && (
-          <Snapshots logs={filteredPainLogs} />
-        )}
-      </div>
-      <button
-        onClick={() => supabase.auth.signOut()}
-        className="logout-button"
-        style={{ position: 'absolute', top: '2.5rem', right: '2.5rem' }}>
-        Sign Out
-      </button>
 
-      <div className={`right-panel ${isFormOpen ? 'form-open' : ''}`}>
-        {renderRightPanel()}
-      </div>
+          <div className={`right-panel ${isFormOpen ? 'form-open' : ''} ${view === 'tabular-data' ? 'full-height-panel' : ''}`}>
+            {renderRightPanel()}
+          </div>
+        </div>
       </div> {/* End of main-content */}
       <footer className="app-footer">
         <p>

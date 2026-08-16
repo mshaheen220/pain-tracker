@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import LocationFields from './LocationFields';
 import SymptomCheckboxes from './SymptomCheckboxes';
+import { toLocalISOString } from '../utils';
+import { usePainLogContext } from '../contexts/PainLogContext';
+import PainTrend from './PainTrend';
 
 const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinates }) => {
+  const { painLogs } = usePainLogContext();
   const [severity, setSeverity] = useState(5); // Renamed from painLevel
   const [bodyPart, setBodyPart] = useState('');
   const [side, setSide] = useState('center'); // 'left', 'right', 'center'
@@ -12,6 +16,8 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
   const [isTenderToTouch, setIsTenderToTouch] = useState(false);
   const [trend, setTrend] = useState('');
   const [notes, setNotes] = useState(''); // Renamed from description
+  const [entryDateTime, setEntryDateTime] = useState(toLocalISOString(new Date()));
+  const isGlobal = bodyPart === 'global';
 
   useEffect(() => {
     if (initialData) {
@@ -24,8 +30,18 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
       setIsTenderToTouch(initialData.isTenderToTouch);
       setTrend(initialData.trend);
       setNotes(initialData.notes);
+      if (initialData.timestamp) {
+        setEntryDateTime(toLocalISOString(new Date(initialData.timestamp)));
+      }
     }
   }, [initialData]);
+
+  useEffect(() => {
+    if (isGlobal) {
+      setSide('center');
+      setSpecificLocation('');
+    }
+  }, [bodyPart, isGlobal]);
 
   const isEditing = !!initialData;
 
@@ -38,12 +54,12 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
 
     const logData = {
       id: isEditing ? initialData.id : `entry-${Date.now()}`,
-      timestamp: isEditing ? initialData.timestamp : new Date().toISOString(),
+      timestamp: new Date(entryDateTime).toISOString(),
       location: {
         bodyPart: bodyPart,
-        side: side,
-        specific: specificLocation,
-        coordinates: initialCoordinates || (isEditing ? initialData.location.coordinates : null),
+        side: isGlobal ? '' : side,
+        specific: isGlobal ? '' : specificLocation,
+        coordinates: isGlobal ? null : initialCoordinates || (isEditing ? initialData.location.coordinates : null),
       },
       severity: Number(severity),
       isSwollen,
@@ -65,6 +81,7 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
     setIsTenderToTouch(false);
     setTrend('');
     setNotes('');
+    setEntryDateTime(toLocalISOString(new Date()));
     onClose(); // Close the modal after submission
   };
 
@@ -75,10 +92,22 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
     }
   };
 
+  const showTrend = bodyPart && (side !== 'center' || specificLocation) && !isGlobal;
+
   return (
     <form onSubmit={handleSubmit} className="pain-form">
       <h2>{isEditing ? 'Edit Pain Entry' : 'Log Your Pain'}</h2>
-      {isEditing && (
+      <div className="form-group">
+        <label htmlFor="entryDateTime">Date and Time:</label>
+        <input
+          id="entryDateTime"
+          type="datetime-local"
+          value={entryDateTime}
+          onChange={(e) => setEntryDateTime(e.target.value)}
+          className="form-input"
+        />
+      </div>
+      {isEditing && !isGlobal && (
         <p style={{ fontSize: '0.9rem', color: '#a0aec0', margin: '-0.5rem 0 0.5rem' }}>
           Click on the model to update the pain location.
         </p>
@@ -102,6 +131,7 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
         setSide={setSide}
         specificLocation={specificLocation}
         setSpecificLocation={setSpecificLocation}
+        disabled={isGlobal}
       />
       <SymptomCheckboxes
         isSwollen={isSwollen}
@@ -111,16 +141,27 @@ const PainForm = ({ onClose, onLogPain, onDelete, initialData, initialCoordinate
         isTenderToTouch={isTenderToTouch}
         setIsTenderToTouch={setIsTenderToTouch}
       />
-      <div className="form-group">
-        <label htmlFor="trend">Trend:</label>
-        <select id="trend" className="form-select" value={trend} onChange={(e) => setTrend(e.target.value)}>
-          <option value="">Select Trend</option>
-          <option value="improved">Improved</option>
-          <option value="intensified">Intensified</option>
-          <option value="unchanged">Unchanged</option>
-          <option value="new">New</option>
-        </select>
-      </div>
+      {showTrend && (
+        <div className="form-group">
+          <label htmlFor="trend">Trend:</label>
+          <div style={{ marginBottom: '10px' }}>
+            <PainTrend
+              painLogs={painLogs}
+              bodyPart={bodyPart}
+              side={side}
+              specificLocation={specificLocation}
+              entryDateTime={entryDateTime}
+            />
+          </div>
+          <select id="trend" className="form-select" value={trend} onChange={(e) => setTrend(e.target.value)}>
+            <option value="">Select Trend</option>
+            <option value="improved">Improved</option>
+            <option value="intensified">Intensified</option>
+            <option value="unchanged">Unchanged</option>
+            <option value="new">New</option>
+          </select>
+        </div>
+      )}
       <div className="form-group">
         <label htmlFor="notes">Notes (optional):</label>
         <textarea id="notes" className="form-textarea" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="e.g., Sharp pain after sitting for extended periods." />

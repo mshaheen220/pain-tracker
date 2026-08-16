@@ -4,6 +4,7 @@ import intensifiedIcon from '../assets/icons/trend_intensified.png';
 import newIcon from '../assets/icons/trend_new.png';
 import unchangedIcon from '../assets/icons/trend_unchanged.png';
 import { formatLocation, getSeverityColor } from '../utils';
+import { GLOBAL_PAIN_TYPES } from '../data/constants';
 
 const trendIcons = {
   improved: improvedIcon,
@@ -12,38 +13,54 @@ const trendIcons = {
   unchanged: unchangedIcon,
 };
 
-const PainLogList = ({ logs, setHoveredPainId, setFocusedPainPoint, handleEditClick }) => {
+const PainLogList = ({ logs, allLogsForPeriod, setHoveredPainId, setFocusedPainPoint, handleEditClick, onShowGlobal }) => {
+  const globalLogsForPeriodCount = allLogsForPeriod.filter(log => GLOBAL_PAIN_TYPES.includes(log.location.bodyPart)).length;
+  const globalLogs = logs.filter(log => GLOBAL_PAIN_TYPES.includes(log.location.bodyPart));
+  const specificLogs = logs.filter(log => !GLOBAL_PAIN_TYPES.includes(log.location.bodyPart));
+
+  const logsToRender = specificLogs.length > 0 ? specificLogs : globalLogs;
+
   return (
     <div className="pain-logs-container">
       <h2>My Pain Logs</h2>
-      {logs.length === 0 ? (
+      {logs.length === 0 && globalLogsForPeriodCount === 0 ? (
         <p>No pain logged yet.</p>
       ) : (
         <ul>
-          {logs.map((log) => (
+          {globalLogsForPeriodCount > 0 && (
+            <li className="pain-log-item global-notes-header" onClick={onShowGlobal}>
+              <div className="pain-log-header">
+                <strong>
+                  <span className="global-notes-icon">🌍</span> Global Notes
+                </strong>
+                <span className="global-notes-count">{globalLogsForPeriodCount}</span>
+              </div>
+            </li>
+          )}
+          {logsToRender.map(log => (
             <li
               key={log.id}
               className="pain-log-item"
               style={{ borderLeftColor: getSeverityColor(log.severity) }}
               onMouseEnter={() => {
-                setHoveredPainId(log.id);
-                setFocusedPainPoint(log);
+                if (!GLOBAL_PAIN_TYPES.includes(log.location.bodyPart)) {
+                  setHoveredPainId(log.id);
+                  setFocusedPainPoint(log);
+                }
               }}
               onMouseLeave={() => {
-                setHoveredPainId(null);
-                setFocusedPainPoint(null);
+                if (!GLOBAL_PAIN_TYPES.includes(log.location.bodyPart)) {
+                  setHoveredPainId(null);
+                  setFocusedPainPoint(null);
+                }
               }}
-              onClick={() => handleEditClick(log)}>
+              onClick={() => handleEditClick(log)}
+            >
               <div className="pain-log-header">
                 <strong>{formatLocation(log.location)}</strong>
                 <div className="pain-log-header-right">
                   {log.trend && trendIcons[log.trend] && (
-                    <img
-                      src={trendIcons[log.trend]}
-                      alt={log.trend}
-                      title={log.trend}
-                      className="trend-icon"
-                    />
+                    <img src={trendIcons[log.trend]} alt={log.trend} title={log.trend} className="trend-icon" />
                   )}
                   <span className="severity-pill" style={{ backgroundColor: getSeverityColor(log.severity) }}>
                     {log.severity}

@@ -64,9 +64,19 @@
   flex: 1; /* Allows main content to grow and push footer down */
   display: flex;
   flex-direction: row; /* Default for desktop */
-  align-items: flex-start;
   padding: 2rem;
   gap: 2rem;
+}
+
+.panels-container {
+  display: flex;
+  width: 100%;
+  gap: 2rem;
+  position: relative;
+}
+
+.panels-container.align-panels-center {
+  align-items: center; /* Vertically center the panels when this class is applied */
 }
 
 .left-panel {
@@ -80,12 +90,16 @@
   flex: 1;
   max-width: 450px;
   position: relative;
-  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 8rem); /* Adjust as needed */
   padding: 1.5rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;
-  display: flex;
-  flex-direction: column;
+}
+
+.right-panel.full-height-panel {
+  max-height: 100%;
 }
 
 h1 {

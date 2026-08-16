@@ -1,5 +1,19 @@
 [
   {
+    "id": "global",
+    "name": "Global (not specific to a body part)",
+        "basicParts": [
+        {
+          "id": "global_note",
+          "name": "General Note"
+        },
+        {
+          "id": "global_pain",
+          "name": "Overall Pain"
+        }
+      ]
+  },
+  {
     "id": "head_face",
     "name": "Head & Face",
     "basicParts": [
