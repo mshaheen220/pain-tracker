@@ -22,8 +22,24 @@ function App() {
   const [hoveredPainId, setHoveredPainId] = useState(null);
   const [editingEntry, setEditingEntry] = useState(null);
   const [focusedPainPoint, setFocusedPainPoint] = useState(null); // New state for focused point
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+
+  // Calculate today's date
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, '0');
+  const day = String(today.getDate()).padStart(2, '0');
+  const formattedToday = `${year}-${month}-${day}`;
+
+  // Calculate date 7 days ago
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const sevenDaysAgoYear = sevenDaysAgo.getFullYear();
+  const sevenDaysAgoMonth = String(sevenDaysAgo.getMonth() + 1).padStart(2, '0');
+  const sevenDaysAgoDay = String(sevenDaysAgo.getDate()).padStart(2, '0');
+  const formattedSevenDaysAgo = `${sevenDaysAgoYear}-${sevenDaysAgoMonth}-${sevenDaysAgoDay}`;
+
+  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
+  const [endDate, setEndDate] = useState(formattedToday);
   const [selectedLogId, setSelectedLogId] = useState(null); // For tabular data selection
   const [showOnlyGlobal, setShowOnlyGlobal] = useState(false);
   const { painLogs, addPainLog, updatePainLog, deletePainLog } = usePainLogContext();
@@ -35,8 +51,8 @@ function App() {
   }, [startDate, endDate]);
 
   const handleClearFilters = () => {
-    setStartDate('');
-    setEndDate('');
+    setStartDate(formattedSevenDaysAgo);
+    setEndDate(formattedToday);
     setSelectedLogId(null);
     setShowOnlyGlobal(false);
   };
